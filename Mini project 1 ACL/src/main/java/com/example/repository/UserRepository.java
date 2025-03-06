@@ -17,6 +17,7 @@ public class UserRepository extends MainRepository<User>{
     protected String getDataPath() {
         return "src/main/java/com/example/data/users.json";
     }
+
     @Override
     protected Class<User[]> getArrayType() {
         return User[].class;
@@ -36,7 +37,6 @@ public class UserRepository extends MainRepository<User>{
         save(user);
         return user;
     }
-
     public List<Order> getOrdersByUserId(UUID userId) {
         User user = getUserById(userId);
         return (user != null) ? user.getOrders() : new ArrayList<>();
@@ -55,7 +55,6 @@ public class UserRepository extends MainRepository<User>{
             overrideData(getUsers());
         }
     }
-
     public void deleteUserById(UUID userId) {
         ArrayList<User> users = getUsers();
         users.removeIf(user -> user.getId().equals(userId));
