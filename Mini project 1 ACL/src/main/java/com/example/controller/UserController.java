@@ -38,31 +38,31 @@ public class UserController {
     @PostMapping("/{userId}/checkout")
     public String addOrderToUser(@PathVariable UUID userId) {
         userService.addOrderToUser(userId);
-        return "Order placed successfully!";
+        return "Order added successfully";
     }
     @PostMapping("/{userId}/removeOrder")
     public String removeOrderFromUser(@PathVariable UUID userId, @RequestParam UUID orderId) {
         userService.removeOrderFromUser(userId, orderId);
-        return "Order removed successfully!";
+        return "Order removed successfully";
     }
     @DeleteMapping("/{userId}/emptyCart")
     public String emptyCart(@PathVariable UUID userId) {
         userService.emptyCart(userId);
-        return "Cart emptied successfully!";
+        return "Cart emptied successfully";
     }
     @PutMapping("/addProductToCart")
     public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId) {
         // Call CartService here (to be implemented later)
-        return "Product added to cart successfully!";
+        return "Product added to cart";
     }
     @PutMapping("/deleteProductFromCart")
     public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId) {
         // Call CartService here (to be implemented later)
-        return "Product removed from cart successfully!";
+        return "Product deleted from cart";
     }
     @DeleteMapping("/delete/{userId}")
     public String deleteUserById(@PathVariable UUID userId) {
         userService.deleteUserById(userId);
-        return "User deleted successfully!";
+        return "User deleted successfully";
     }
 }
