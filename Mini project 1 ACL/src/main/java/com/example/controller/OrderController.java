@@ -2,6 +2,8 @@ package com.example.controller;
 
 import com.example.model.Order;
 import com.example.service.OrderService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,9 +20,15 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public void addOrder(@RequestBody Order order) {
-        orderService.addOrder(order);
+    public ResponseEntity<Order> addOrder(@RequestBody Order order) {
+        Order savedOrder = orderService.addOrder(order);
+        if (savedOrder != null) {
+            return ResponseEntity.ok(savedOrder);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
     @GetMapping("/{orderId}")
     public Order getOrderById(@PathVariable UUID orderId) {
         return orderService.getOrderById(orderId);

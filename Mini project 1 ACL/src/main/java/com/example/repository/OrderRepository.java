@@ -21,9 +21,14 @@ public class OrderRepository extends MainRepository<Order> {
     }
 
     public void addOrder(Order order) {
-        order.setId(UUID.randomUUID()); // Assign a unique ID
-        save(order); // Save order to JSON file
+        if (order.getId() == null) {
+            order.setId(UUID.randomUUID());
+        }
+        ArrayList<Order> orders = getOrders();
+        orders.add(order);
+        overrideData(orders);
     }
+
     public ArrayList<Order> getOrders() {
         return findAll();
     }

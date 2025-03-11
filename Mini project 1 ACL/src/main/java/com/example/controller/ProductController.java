@@ -32,10 +32,24 @@ public class ProductController {
     }
     @PutMapping("/update/{productId}")
     public Product updateProduct(@PathVariable UUID productId, @RequestBody Map<String, Object> body) {
-        String newName = (String) body.get("name");
-        double newPrice = (double) body.get("price");
+        Product existingProduct = productService.getProductById(productId);
+        if (existingProduct == null) {
+            return null; // Product not found
+        }
+
+        // Check both "name" and "newName"
+        String newName = body.containsKey("newName") ? (String) body.get("newName")
+                : body.containsKey("name") ? (String) body.get("name")
+                : existingProduct.getName();
+
+        // Check both "price" and "newPrice"
+        Double newPrice = body.containsKey("newPrice") ? ((Number) body.get("newPrice")).doubleValue()
+                : body.containsKey("price") ? ((Number) body.get("price")).doubleValue()
+                : existingProduct.getPrice();
+
         return productService.updateProduct(productId, newName, newPrice);
     }
+
     @PutMapping("/applyDiscount")
     public String applyDiscount(@RequestParam double discount, @RequestBody ArrayList<UUID> productIds) {
         productService.applyDiscount(discount, productIds);
