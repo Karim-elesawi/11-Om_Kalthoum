@@ -13,7 +13,7 @@ public class OrderRepository extends MainRepository<Order> {
 
     @Override
     protected String getDataPath() {
-        return "src/main/java/com/example/data/orders.json"; // Adjust path if needed
+        return "src/main/java/com/example/data/orders.json"; 
     }
     @Override
     protected Class<Order[]> getArrayType() {
@@ -25,9 +25,13 @@ public class OrderRepository extends MainRepository<Order> {
             order.setId(UUID.randomUUID());
         }
         ArrayList<Order> orders = getOrders();
-        orders.add(order);
-        overrideData(orders);
+
+        if (getOrderById(order.getId()) == null) {
+            orders.add(order);
+            overrideData(orders);
+        }
     }
+
 
     public ArrayList<Order> getOrders() {
         return findAll();
@@ -40,7 +44,7 @@ public class OrderRepository extends MainRepository<Order> {
     }
     public void deleteOrderById(UUID orderId) {
         ArrayList<Order> orders = getOrders();
-        orders.removeIf(order -> order.getId().equals(orderId)); // Remove order with matching ID
-        overrideData(orders); // Save updated orders list back to JSON
+        orders.removeIf(order -> order.getId().equals(orderId));
+        overrideData(orders);
     }
 }

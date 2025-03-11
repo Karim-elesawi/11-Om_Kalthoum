@@ -38,8 +38,15 @@ public class OrderController {
         return orderService.getOrders();
     }
     @DeleteMapping("/delete/{orderId}")
-    public String deleteOrderById(@PathVariable UUID orderId) {
-        orderService.deleteOrderById(orderId);
-        return "Order deleted successfully";
+    public ResponseEntity<String> deleteOrderById(@PathVariable UUID orderId) {
+        boolean deleted = orderService.deleteOrderById(orderId);
+
+        if (deleted) {
+            return ResponseEntity.ok("Order deleted successfully");
+        } else {
+            return ResponseEntity.ok("Order not found"); 
+        }
     }
+
+
 }

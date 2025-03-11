@@ -34,15 +34,13 @@ public class ProductController {
     public Product updateProduct(@PathVariable UUID productId, @RequestBody Map<String, Object> body) {
         Product existingProduct = productService.getProductById(productId);
         if (existingProduct == null) {
-            return null; // Product not found
+            return null; 
         }
 
-        // Check both "name" and "newName"
         String newName = body.containsKey("newName") ? (String) body.get("newName")
                 : body.containsKey("name") ? (String) body.get("name")
                 : existingProduct.getName();
 
-        // Check both "price" and "newPrice"
         Double newPrice = body.containsKey("newPrice") ? ((Number) body.get("newPrice")).doubleValue()
                 : body.containsKey("price") ? ((Number) body.get("price")).doubleValue()
                 : existingProduct.getPrice();
