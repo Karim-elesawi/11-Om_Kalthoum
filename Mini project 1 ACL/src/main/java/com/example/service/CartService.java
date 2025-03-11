@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.model.Cart;
 import com.example.model.Product;
 import com.example.repository.CartRepository;
+import com.example.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,29 +14,64 @@ import java.util.UUID;
 public class CartService {
 
     private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
-    public CartService(CartRepository cartRepository) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository) {
         this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
     }
 
     public Cart addCart(Cart cart) {
         return cartRepository.addCart(cart);
     }
+
     public ArrayList<Cart> getCarts() {
         return cartRepository.getCarts();
     }
+
     public Cart getCartById(UUID cartId) {
         return cartRepository.getCartById(cartId);
     }
+
     public Cart getCartByUserId(UUID userId) {
         return cartRepository.getCartByUserId(userId);
     }
-    public void addProductToCart(UUID cartId, Product product) {
-        cartRepository.addProductToCart(cartId, product);
+
+    public void addProductToCart(UUID userId, UUID productId) {
+        Cart cart = cartRepository.getCartByUserId(userId);
+
+        if (cart == null) {
+            cart = new Cart();
+            cart.setId(UUID.randomUUID());
+            cart.setUserId(userId);
+            cart.setProducts(new ArrayList<>());
+            cartRepository.addCart(cart); // ✅ Ensure the new cart is saved
+        }
+
+        Product product = productRepository.getProductById(productId);
+        if (product != null) {
+            cart.getProducts().add(product);
+
+            // ✅ Save the updated cart list
+            ArrayList<Cart> allCarts = cartRepository.getCarts();
+            for (int i = 0; i < allCarts.size(); i++) {
+                if (allCarts.get(i).getId().equals(cart.getId())) {
+                    allCarts.set(i, cart);
+                    break;
+                }
+            }
+            cartRepository.overrideData(allCarts);
+        }
     }
-    public void deleteProductFromCart(UUID cartId, Product product) {
-        cartRepository.deleteProductFromCart(cartId, product);
+
+    public void deleteProductFromCart(UUID userId, UUID productId) {
+        Cart cart = cartRepository.getCartByUserId(userId);
+        if (cart != null) {
+            cart.getProducts().removeIf(p -> p.getId().equals(productId)); // Remove matching product
+            cartRepository.overrideData(cartRepository.getCarts()); // Save updated carts list
+        }
     }
+
     public void deleteCartById(UUID cartId) {
         cartRepository.deleteCartById(cartId);
     }

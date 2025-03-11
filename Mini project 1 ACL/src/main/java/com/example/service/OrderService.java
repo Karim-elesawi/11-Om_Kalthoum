@@ -17,9 +17,11 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public void addOrder(Order order) {
+    public Order addOrder(Order order) {
         orderRepository.addOrder(order);
+        return orderRepository.getOrderById(order.getId()); // Ensure it was saved
     }
+
     public ArrayList<Order> getOrders() {
         return orderRepository.getOrders();
     }
