@@ -34,15 +34,15 @@ public class UserService {
     public void addOrderToUser(UUID userId) {
         User user = userRepository.getUserById(userId);
         if (user != null) {
-            Order newOrder = new Order(UUID.randomUUID(), userId, 0.0, new ArrayList<>()); // Empty order
+            Order newOrder = new Order(UUID.randomUUID(), userId, 0.0, new ArrayList<>());
             userRepository.addOrderToUser(userId, newOrder);
         }
     }
     public void emptyCart(UUID userId) {
         User user = userRepository.getUserById(userId);
         if (user != null) {
-            user.getOrders().clear(); // Remove all products from cart
-            userRepository.overrideData(userRepository.getUsers()); // Save changes
+            user.getOrders().clear(); 
+            userRepository.overrideData(userRepository.getUsers()); 
         }
     }
     public void removeOrderFromUser(UUID userId, UUID orderId) {

@@ -28,11 +28,13 @@ public class OrderService {
     public Order getOrderById(UUID orderId) {
         return orderRepository.getOrderById(orderId);
     }
-    public void deleteOrderById(UUID orderId) throws IllegalArgumentException {
+    public boolean deleteOrderById(UUID orderId) {
         Order order = orderRepository.getOrderById(orderId);
         if (order == null) {
-            throw new IllegalArgumentException("Order with ID " + orderId + " not found.");
+            return false; 
         }
         orderRepository.deleteOrderById(orderId);
+        return true; 
     }
+
 }

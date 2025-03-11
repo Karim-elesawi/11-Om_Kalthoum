@@ -51,7 +51,7 @@ public class CartRepository extends MainRepository<Cart> {
         Cart cart = getCartById(cartId);
         if (cart != null) {
             cart.getProducts().add(product);
-            overrideData(getCarts()); // Save updated carts list back to JSON
+            overrideData(getCarts()); 
         }
     }
 
@@ -59,7 +59,7 @@ public class CartRepository extends MainRepository<Cart> {
         Cart cart = getCartById(cartId);
         if (cart != null) {
             cart.getProducts().removeIf(p -> p.getId().equals(product.getId()));
-            overrideData(getCarts()); // Save updated carts list back to JSON
+            overrideData(getCarts()); 
         }
     }
 

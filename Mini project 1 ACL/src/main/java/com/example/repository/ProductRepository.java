@@ -22,10 +22,15 @@ public class ProductRepository extends MainRepository<Product> {
     }
 
     public Product addProduct(Product product) {
-        product.setId(UUID.randomUUID()); // Assign a unique ID
-        save(product); // Save product to JSON file
+        if (product.getId() == null) {
+            product.setId(UUID.randomUUID());
+        }
+        ArrayList<Product> products = getProducts();
+        products.add(product);
+        overrideData(products);
         return product;
     }
+
     public ArrayList<Product> getProducts() {
         return findAll();
     }
@@ -41,11 +46,11 @@ public class ProductRepository extends MainRepository<Product> {
             if (product.getId().equals(productId)) {
                 product.setName(newName);
                 product.setPrice(newPrice);
-                overrideData(products); // Save updated products list
+                overrideData(products); 
                 return product;
             }
         }
-        return null; // Product not found
+        return null; 
     }
     public void applyDiscount(double discount, ArrayList<UUID> productIds) {
         ArrayList<Product> products = getProducts();
@@ -55,11 +60,11 @@ public class ProductRepository extends MainRepository<Product> {
                 product.setPrice(newPrice);
             }
         }
-        overrideData(products); // Save updated products list
+        overrideData(products); 
     }
     public void deleteProductById(UUID productId) {
         ArrayList<Product> products = getProducts();
         products.removeIf(product -> product.getId().equals(productId));
-        overrideData(products); // Save updated products list
+        overrideData(products);
     }
 }

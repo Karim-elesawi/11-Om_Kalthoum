@@ -33,7 +33,9 @@ public class UserRepository extends MainRepository<User>{
                 .orElse(null);
     }
     public User addUser(User user) {
-        user.setId(UUID.randomUUID());
+        if (user.getId() == null) { 
+            user.setId(UUID.randomUUID());
+        }
         save(user);
         return user;
     }

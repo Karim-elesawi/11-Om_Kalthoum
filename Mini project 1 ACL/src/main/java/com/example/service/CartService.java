@@ -45,14 +45,13 @@ public class CartService {
             cart.setId(UUID.randomUUID());
             cart.setUserId(userId);
             cart.setProducts(new ArrayList<>());
-            cartRepository.addCart(cart); // ✅ Ensure the new cart is saved
+            cartRepository.addCart(cart); 
         }
 
         Product product = productRepository.getProductById(productId);
         if (product != null) {
             cart.getProducts().add(product);
 
-            // ✅ Save the updated cart list
             ArrayList<Cart> allCarts = cartRepository.getCarts();
             for (int i = 0; i < allCarts.size(); i++) {
                 if (allCarts.get(i).getId().equals(cart.getId())) {
@@ -67,8 +66,8 @@ public class CartService {
     public void deleteProductFromCart(UUID userId, UUID productId) {
         Cart cart = cartRepository.getCartByUserId(userId);
         if (cart != null) {
-            cart.getProducts().removeIf(p -> p.getId().equals(productId)); // Remove matching product
-            cartRepository.overrideData(cartRepository.getCarts()); // Save updated carts list
+            cart.getProducts().removeIf(p -> p.getId().equals(productId)); 
+            cartRepository.overrideData(cartRepository.getCarts());
         }
     }
 
